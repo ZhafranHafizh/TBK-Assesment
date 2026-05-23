@@ -68,6 +68,7 @@ const submit = () => {
 </script>
 
 <template>
+
     <Head title="Chart of Account" />
 
     <AuthenticatedLayout>
@@ -81,10 +82,8 @@ const submit = () => {
                         Kelola daftar kode akun untuk pencatatan transaksi keuangan.
                     </p>
                 </div>
-                <button 
-                    @click="showCreateForm = !showCreateForm"
-                    class="rounded-md bg-[#238636] px-3 py-2 text-sm font-medium text-white transition-colors duration-150 hover:bg-[#2ea043]"
-                >
+                <button @click="showCreateForm = !showCreateForm"
+                    class="rounded-md bg-[#238636] px-3 py-2 text-sm font-medium text-white transition-colors duration-150 hover:bg-[#2ea043]">
                     {{ showCreateForm ? 'Tutup Form' : '+ Tambah COA' }}
                 </button>
             </div>
@@ -104,7 +103,8 @@ const submit = () => {
 
                 <div class="flex flex-col lg:flex-row gap-6 items-start">
                     <!-- Table Section -->
-                    <div :class="showCreateForm ? 'lg:w-2/3' : 'w-full'" class="transition-all duration-300 ease-in-out">
+                    <div :class="showCreateForm ? 'lg:w-2/3' : 'w-full'"
+                        class="transition-all duration-300 ease-in-out">
                         <div class="overflow-hidden rounded-md border border-[#30363d] bg-[#161b22]">
                             <table class="w-full text-left text-sm text-[#e6edf3]">
                                 <thead
@@ -113,7 +113,7 @@ const submit = () => {
                                         <th scope="col" class="px-4 py-3 w-24">Kode</th>
                                         <th scope="col" class="px-4 py-3">Nama Akun</th>
                                         <th scope="col" class="px-4 py-3">Kategori</th>
-                                        <th scope="col" class="px-4 py-3 w-32 text-right">Aksi</th>
+                                        <th scope="col" class="px-4 py-3 w-32 text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-[#30363d]">
@@ -139,13 +139,17 @@ const submit = () => {
                                                 <Link v-if="coa.is_editable_full" :href="route('coas.edit', coa.id)"
                                                     class="inline-flex items-center rounded bg-[#21262d] px-2.5 py-1.5 text-xs font-medium text-[#c9d1d9] border border-[#30363d] hover:bg-[#30363d] hover:text-[#e6edf3] transition-colors">
                                                     Edit</Link>
-                                                <span v-else class="inline-flex items-center rounded bg-[#161b22] px-2.5 py-1.5 text-xs font-medium text-[#8b949e] border border-[#30363d] cursor-not-allowed" title="Terkunci (Lebih dari 24 jam)">🔒</span>
-                                                <button @click="confirmDeletion(coa.id)" class="inline-flex items-center rounded bg-[#21262d] px-2.5 py-1.5 text-xs font-medium text-[#f85149] border border-[#30363d] hover:bg-[#f85149] hover:text-white transition-colors">Hapus</button>
+                                                <span v-else
+                                                    class="inline-flex items-center rounded bg-[#161b22] px-2.5 py-1.5 text-xs font-medium text-[#8b949e] border border-[#30363d] cursor-not-allowed"
+                                                    title="Terkunci (Lebih dari 24 jam)">🔒</span>
+                                                <button @click="confirmDeletion(coa.id)"
+                                                    class="inline-flex items-center rounded bg-[#21262d] px-2.5 py-1.5 text-xs font-medium text-[#f85149] border border-[#30363d] hover:bg-[#f85149] hover:text-white transition-colors">Hapus</button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr v-if="coas.data.length === 0">
-                                        <td colspan="4" class="px-4 py-8 text-center text-[#8b949e]">Belum ada data Chart of
+                                        <td colspan="4" class="px-4 py-8 text-center text-[#8b949e]">Belum ada data
+                                            Chart of
                                             Account.
                                         </td>
                                     </tr>
@@ -157,65 +161,55 @@ const submit = () => {
                     <!-- Create Form Sidebar -->
                     <div v-show="showCreateForm" class="lg:w-1/3 w-full transition-all duration-300 ease-in-out">
                         <div class="rounded-md border border-[#30363d] bg-[#161b22] p-5 shadow-sm sticky top-6">
-                            <h3 class="text-lg font-medium text-[#e6edf3] mb-4 border-b border-[#30363d] pb-2">Tambah COA Baru</h3>
+                            <h3 class="text-lg font-medium text-[#e6edf3] mb-4 border-b border-[#30363d] pb-2">Tambah
+                                COA Baru
+                            </h3>
                             <form @submit.prevent="submit" class="space-y-4">
                                 <div>
                                     <label for="code" class="block text-sm font-medium text-[#e6edf3]">Kode Akun</label>
-                                    <input
-                                        id="code"
-                                        v-model="form.code"
-                                        type="text"
+                                    <input id="code" v-model="form.code" type="text"
                                         class="mt-1 block w-full rounded-md border-[#30363d] bg-[#0d1117] text-[#e6edf3] shadow-sm focus:border-[#58a6ff] focus:ring-[#58a6ff] sm:text-sm font-mono"
-                                        required
-                                        autofocus
-                                        placeholder="Contoh: 101, 401"
-                                    />
-                                    <p v-if="form.errors.code" class="mt-1 text-xs text-[#ff7b72]">{{ form.errors.code }}</p>
+                                        required autofocus placeholder="Contoh: 101, 401" />
+                                    <p v-if="form.errors.code" class="mt-1 text-xs text-[#ff7b72]">{{ form.errors.code
+                                        }}</p>
                                 </div>
 
                                 <div>
                                     <label for="name" class="block text-sm font-medium text-[#e6edf3]">Nama Akun</label>
-                                    <input
-                                        id="name"
-                                        v-model="form.name"
-                                        type="text"
+                                    <input id="name" v-model="form.name" type="text"
                                         class="mt-1 block w-full rounded-md border-[#30363d] bg-[#0d1117] text-[#e6edf3] shadow-sm focus:border-[#58a6ff] focus:ring-[#58a6ff] sm:text-sm"
-                                        required
-                                        placeholder="Contoh: Gaji"
-                                    />
-                                    <p v-if="form.errors.name" class="mt-1 text-xs text-[#ff7b72]">{{ form.errors.name }}</p>
+                                        required placeholder="Contoh: Gaji" />
+                                    <p v-if="form.errors.name" class="mt-1 text-xs text-[#ff7b72]">{{ form.errors.name
+                                        }}</p>
                                 </div>
 
                                 <div>
-                                    <label for="coa_category_id" class="block text-sm font-medium text-[#e6edf3]">Kategori</label>
+                                    <label for="coa_category_id"
+                                        class="block text-sm font-medium text-[#e6edf3]">Kategori</label>
                                     <div class="mt-1 flex items-center gap-2">
-                                        <CustomSelect v-model="form.coa_category_id" :options="categoryFormOptions" placeholder="Pilih Kategori..." :searchable="true" />
-                                        <Link
-                                            :href="route('coa-categories.index', { create: 'true' })"
+                                        <CustomSelect v-model="form.coa_category_id" :options="categoryFormOptions"
+                                            placeholder="Pilih Kategori..." :searchable="true" />
+                                        <Link :href="route('coa-categories.index', { create: 'true' })"
                                             class="flex items-center justify-center min-w-[38px] h-[38px] bg-[#21262d] border border-[#30363d] text-[#c9d1d9] rounded-md hover:bg-[#30363d] hover:text-[#e6edf3] transition-colors"
-                                            title="Tambah Kategori COA Baru"
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                            title="Tambah Kategori COA Baru">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 4v16m8-8H4" />
                                             </svg>
                                         </Link>
                                     </div>
-                                    <p v-if="form.errors.coa_category_id" class="mt-1 text-xs text-[#ff7b72]">{{ form.errors.coa_category_id }}</p>
+                                    <p v-if="form.errors.coa_category_id" class="mt-1 text-xs text-[#ff7b72]">{{
+                                        form.errors.coa_category_id }}</p>
                                 </div>
 
                                 <div class="flex items-center justify-end gap-2 pt-4">
-                                    <button
-                                        type="button"
-                                        @click="showCreateForm = false; form.reset()"
-                                        class="rounded-md border border-[#30363d] bg-[#21262d] px-3 py-1.5 text-sm font-medium text-[#c9d1d9] transition-colors hover:bg-[#30363d] hover:text-[#e6edf3]"
-                                    >
+                                    <button type="button" @click="showCreateForm = false; form.reset()"
+                                        class="rounded-md border border-[#30363d] bg-[#21262d] px-3 py-1.5 text-sm font-medium text-[#c9d1d9] transition-colors hover:bg-[#30363d] hover:text-[#e6edf3]">
                                         Batal
                                     </button>
-                                    <button
-                                        type="submit"
-                                        :disabled="form.processing"
-                                        class="rounded-md bg-[#238636] px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-[#2ea043] disabled:opacity-50"
-                                    >
+                                    <button type="submit" :disabled="form.processing"
+                                        class="rounded-md bg-[#238636] px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-[#2ea043] disabled:opacity-50">
                                         Simpan
                                     </button>
                                 </div>
@@ -234,18 +228,19 @@ const submit = () => {
                 </h2>
 
                 <p class="mt-1 text-sm text-[#8b949e]">
-                    Setelah data dihapus, semua transaksi yang terhubung mungkin akan ikut terpengaruh. Tindakan ini tidak dapat dibatalkan.
+                    Setelah data dihapus, semua transaksi yang terhubung mungkin akan ikut terpengaruh. Tindakan ini
+                    tidak dapat
+                    dibatalkan.
                 </p>
 
                 <div class="mt-6 flex justify-end gap-3">
-                    <SecondaryButton @click="closeModal" class="bg-[#21262d] text-[#c9d1d9] border-[#30363d] hover:bg-[#30363d] hover:text-[#e6edf3]">
+                    <SecondaryButton @click="closeModal"
+                        class="bg-[#21262d] text-[#c9d1d9] border-[#30363d] hover:bg-[#30363d] hover:text-[#e6edf3]">
                         Batal
                     </SecondaryButton>
 
-                    <DangerButton
-                        class="bg-[#da3633] hover:bg-[#f85149] text-white border-transparent"
-                        @click="deleteItem"
-                    >
+                    <DangerButton class="bg-[#da3633] hover:bg-[#f85149] text-white border-transparent"
+                        @click="deleteItem">
                         Ya, Hapus
                     </DangerButton>
                 </div>

@@ -1,58 +1,117 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ArthaLedger - Aplikasi Pencatatan Keuangan
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+ArthaLedger adalah sebuah aplikasi web pencatatan keuangan berbasis Chart of Account (COA). Aplikasi ini dirancang untuk mencatat transaksi keuangan secara akurat dengan mengelompokkan setiap transaksi ke dalam kategori Income atau Expense, lalu menghasilkan laporan Profit/Loss (Laba Rugi) bulanan secara instan.
 
-## About Laravel
+Sistem ini sangat cocok digunakan untuk admin atau pencatat keuangan yang membutuhkan pencatatan debit/kredit harian dengan dukungan multi-currency (konversi mata uang asing otomatis) dan antarmuka yang modern.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Daftar Modul
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Aplikasi ini memiliki beberapa modul utama:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. **Master Data (COA)**
+   - Mengelola data Kategori COA (Income/Expense).
+   - Mengelola data Master Chart of Account (COA).
+2. **Transaksi Keuangan**
+   - Pencatatan transaksi Debit dan Credit harian.
+   - Mendukung input nominal dalam Rupiah (IDR) maupun Valuta Asing.
+   - Konversi mata uang otomatis (mengambil historical rate maupun latest rate via Frankfurter API).
+3. **Laporan Profit/Loss**
+   - Laporan keuangan bulanan berbasis pivot/cross-tab.
+   - Filter rentang periode yang fleksibel.
+4. **Export Data**
+   - Mendukung export data laporan ke dalam format Microsoft Excel (.xlsx).
+5. **Dashboard Analytics**
+   - Menyajikan ringkasan visual mengenai total Income, total Expense, Net Income, serta grafik tren transaksi.
+6. **Pengaturan Sistem**
+   - Pengaturan konfigurasi nama aplikasi secara global dan pengelolaan mata uang yang diizinkan dalam sistem.
 
-## Learning Laravel
+## Keamanan & Integritas Data
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Sistem ini dirancang dengan prinsip akuntansi yang ketat untuk mencegah manipulasi data (baik yang disengaja maupun karena *human error*):
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Auto-Routing Debit/Kredit:** User tidak dapat memilih apakah transaksi masuk ke Debit atau Credit secara manual. Sistem secara otomatis menempatkan nominal berdasarkan Kategori COA yang dipilih (Income otomatis masuk ke kolom Credit, Expense masuk ke kolom Debit).
+- **Read-Only Exchange Rate:** Field nilai tukar mata uang asing (*exchange rate*) dikunci (*readonly*) pada antarmuka pengguna. Nilai tukar didapatkan murni dari pemanggilan API secara otomatis berdasarkan tanggal transaksi, sehingga user tidak dapat memanipulasi rate konversi.
+- **Periode Kunci (Lock Period):** Data Chart of Account (COA) dan transaksi yang telah melewati batas waktu tertentu (misalnya 24 jam) akan terkunci dan tidak dapat diedit secara bebas untuk menjaga keabsahan riwayat pembukuan.
+- **Backend Validation:** Validasi ganda selalu dilakukan di sisi server (Laravel Form Request) untuk memastikan integritas data tetap terjaga meskipun validasi frontend (UI) berhasil di-bypass.
+- **Soft Deletes (Jejak Audit):** Setiap data (COA, kategori, atau transaksi) yang dihapus tidak akan benar-benar dihilangkan secara fisik dari database (*hard delete*). Sistem menggunakan mekanisme *soft deletes* sehingga data lama tetap tersimpan secara tersembunyi sebagai jejak audit (*audit trail*) dan dapat dipulihkan kapan saja melalui modul Arsip.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## Tech Stack
 
-## Agentic Development
+Proyek ini dibangun menggunakan teknologi modern:
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+- **Backend:** Laravel
+- **Frontend:** Vue.js 3 (Composition API, Script Setup)
+- **Bridge:** Inertia.js
+- **Styling:** Tailwind CSS (Dark Mode Neo-Brutalism Theme)
+- **Database:** MySQL
+- **Library Tambahan:**
+  - `maatwebsite/excel` untuk fungsionalitas export Excel.
+  - `vue-currency-input` untuk formatting angka mata uang secara real-time.
+  - `chart.js` / `vue-chartjs` untuk visualisasi grafik.
+
+## Cara Menjalankan Aplikasi di Local
+
+Ikuti panduan berikut untuk menjalankan aplikasi di lingkungan pengembangan lokal Anda:
+
+### 1. Kebutuhan Sistem
+Pastikan Anda sudah menginstal perangkat lunak berikut:
+- PHP (minimal versi 8.1 / 8.2)
+- Composer
+- Node.js & npm
+- MySQL Server (XAMPP / Laragon / Native)
+
+### 2. Instalasi
+Masuk ke direktori proyek di terminal Anda, lalu instal seluruh dependensi:
 
 ```bash
-composer require laravel/boost --dev
+# Instal dependensi PHP (Laravel)
+composer install
 
-php artisan boost:install
+# Instal dependensi JavaScript (Vue)
+npm install
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 3. Konfigurasi Environment
+Buat salinan dari file konfigurasi environment dan *generate* application key:
 
-## Contributing
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Buka file `.env` dan sesuaikan kredensial database Anda:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nama_database_anda
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## Code of Conduct
+### 4. Migrasi dan Seeder
+Jalankan migrasi database untuk membuat struktur tabel sekaligus memasukkan data awal (akun master, pengaturan default, dsb):
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan migrate --seed
+```
 
-## Security Vulnerabilities
+### 5. Menjalankan Server
+Untuk menjalankan aplikasi ini, Anda harus mengaktifkan dua server secara bersamaan. Buka dua jendela terminal/command prompt:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Terminal 1 (Backend Server):
+```bash
+php artisan serve
+```
 
-## License
+Terminal 2 (Frontend Asset Bundler):
+```bash
+npm run dev
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Aplikasi sekarang sudah berjalan dan dapat diakses melalui browser pada alamat: `http://localhost:8000`
+
+### Akun Login (Default Seeder)
+Jika Anda menggunakan seeder bawaan proyek, Anda dapat masuk menggunakan:
+- **Email:** admin@admin.com (atau sesuai data seeder)
+- **Password:** password
