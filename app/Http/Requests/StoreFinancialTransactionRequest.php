@@ -19,6 +19,9 @@ class StoreFinancialTransactionRequest extends FormRequest
             'description' => ['nullable', 'string', 'max:255'],
             'debit' => ['required', 'numeric', 'min:0'],
             'credit' => ['required', 'numeric', 'min:0'],
+            'original_currency' => ['nullable', 'string', 'size:3'],
+            'original_amount' => ['nullable', 'numeric', 'min:0'],
+            'exchange_rate' => ['nullable', 'numeric', 'min:0'],
         ];
     }
 

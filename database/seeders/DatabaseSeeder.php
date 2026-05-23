@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
 
         // Seed chart of accounts categories, master COA, dan Transaksi Dummy
         $this->call([
+            AppSettingSeeder::class,
             CoaCategorySeeder::class,
             CoaSeeder::class,
             FinancialTransactionSeeder::class,

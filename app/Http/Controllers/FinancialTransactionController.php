@@ -6,6 +6,9 @@ use App\Http\Requests\StoreFinancialTransactionRequest;
 use App\Http\Requests\UpdateFinancialTransactionRequest;
 use App\Models\FinancialTransaction;
 use App\Models\Coa;
+use App\Models\AllowedCurrency;
+use App\Models\ExchangeRate;
+use App\Services\ExchangeRateService;
 use Inertia\Inertia;
 
 class FinancialTransactionController extends Controller
@@ -79,12 +82,29 @@ class FinancialTransactionController extends Controller
         $transactions = $query->paginate($perPage)->withQueryString();
             
         $coas = Coa::with('coaCategory')->get();
-        $categories = \App\Models\CoaCategory::all(); // Untuk filter kategori dropdown
+        $categories = \App\Models\CoaCategory::all();
+
+        // Currency data for the create form
+        $allowedCurrencies = AllowedCurrency::all();
+        $exchangeRates = ExchangeRate::selectRaw('currency_code, rate_to_idr, fetched_at')
+            ->whereIn('id', function ($q) {
+                $q->selectRaw('MAX(id)')
+                  ->from('exchange_rates')
+                  ->groupBy('currency_code');
+            })
+            ->get()
+            ->keyBy('currency_code');
+
+        $rateService = app(ExchangeRateService::class);
+        $isRateStale = $rateService->isRateStale();
             
         return Inertia::render('Transaction/Index', [
             'transactions' => $transactions,
             'coas' => $coas,
             'categories' => $categories,
+            'allowedCurrencies' => $allowedCurrencies,
+            'exchangeRates' => $exchangeRates,
+            'isRateStale' => $isRateStale,
             'filters' => $request->only(['search', 'start_date', 'end_date', 'coa_id', 'category_id', 'sort_by', 'per_page'])
         ]);
     }
@@ -99,7 +119,21 @@ class FinancialTransactionController extends Controller
 
     public function store(StoreFinancialTransactionRequest $request)
     {
-        FinancialTransaction::create($request->validated());
+        $data = $request->validated();
+
+        // If original_currency is not IDR and not null, store metadata
+        if (!empty($data['original_currency']) && $data['original_currency'] !== 'IDR') {
+            // debit/credit sudah dihitung di frontend (original_amount * exchange_rate)
+            // kita tetap simpan metadata-nya
+            $data['original_currency'] = strtoupper($data['original_currency']);
+        } else {
+            // IDR transaction — null out currency metadata
+            $data['original_currency'] = 'IDR';
+            $data['original_amount'] = null;
+            $data['exchange_rate'] = null;
+        }
+
+        FinancialTransaction::create($data);
 
         return redirect()->route('transactions.index')
             ->with('success', 'Transaksi berhasil dicatat.');

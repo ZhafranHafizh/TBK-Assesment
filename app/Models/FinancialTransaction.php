@@ -14,7 +14,10 @@ class FinancialTransaction extends Model
         'coa_id',
         'description',
         'debit',
-        'credit'
+        'credit',
+        'original_currency',
+        'original_amount',
+        'exchange_rate',
     ];
 
     protected $appends = ['is_editable_full', 'is_edited', 'is_restored'];

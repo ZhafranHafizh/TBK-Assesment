@@ -38,6 +38,9 @@ class HandleInertiaRequests extends Middleware
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),
             ],
+            'app_settings' => [
+                'app_name' => \App\Models\AppSetting::get('app_name', 'ArthaLedger'),
+            ],
         ];
     }
 }

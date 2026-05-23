@@ -25,6 +25,7 @@ use App\Http\Controllers\FinancialTransactionController;
 use App\Http\Controllers\ReportController;
 
 use App\Http\Controllers\ArchiveController;
+use App\Http\Controllers\SettingController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/archive', [ArchiveController::class, 'index'])->name('archive.index');
@@ -36,6 +37,14 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/report', [ReportController::class, 'index'])->name('report.index');
     Route::get('/report/export', [ReportController::class, 'export'])->name('report.export');
+
+    // Settings
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::put('/settings/app-name', [SettingController::class, 'updateAppName'])->name('settings.update-app-name');
+    Route::post('/settings/currency', [SettingController::class, 'addCurrency'])->name('settings.add-currency');
+    Route::delete('/settings/currency/{id}', [SettingController::class, 'removeCurrency'])->name('settings.remove-currency');
+    Route::post('/settings/fetch-rates', [SettingController::class, 'fetchRates'])->name('settings.fetch-rates');
+    Route::post('/settings/fetch-historical-rate', [SettingController::class, 'fetchHistoricalRate'])->name('settings.fetch-historical-rate');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

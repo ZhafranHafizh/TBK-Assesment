@@ -15,4 +15,8 @@ export type PageProps<
         success?: string;
         error?: string;
     };
+    app_settings?: {
+        app_name?: string;
+        [key: string]: any;
+    };
 };
