@@ -159,8 +159,8 @@ const submit = () => {
                     </div>
 
                     <!-- Create Form Sidebar -->
-                    <div v-show="showCreateForm" class="lg:w-1/3 w-full transition-all duration-300 ease-in-out">
-                        <div class="rounded-md border border-[#30363d] bg-[#161b22] p-5 shadow-sm sticky top-6">
+                    <div v-show="showCreateForm" class="lg:w-1/3 w-full transition-all duration-300 ease-in-out sticky top-6 self-start">
+                        <div class="rounded-md border border-[#30363d] bg-[#161b22] p-5 shadow-sm">
                             <h3 class="text-lg font-medium text-[#e6edf3] mb-4 border-b border-[#30363d] pb-2">Tambah
                                 COA Baru
                             </h3>

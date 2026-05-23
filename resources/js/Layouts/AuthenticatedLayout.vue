@@ -27,7 +27,8 @@ const showingNavigationDropdown = ref(false);
                                             d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
                                     <span
-                                        class="text-lg font-semibold text-[#e6edf3] hidden sm:block">{{ $page.props.app_settings?.app_name || 'ArthaLedger' }}</span>
+                                        class="text-lg font-semibold text-[#e6edf3] hidden sm:block truncate max-w-[150px] md:max-w-[200px] lg:max-w-[250px] xl:max-w-[300px]"
+                                        :title="$page.props.app_settings?.app_name || 'ArthaLedger'">{{ $page.props.app_settings?.app_name || 'ArthaLedger' }}</span>
                                 </Link>
                             </div>
 
