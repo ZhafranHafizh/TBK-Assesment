@@ -1,6 +1,6 @@
-# ArthaLedger - Aplikasi Pencatatan Keuangan
+# Aplikasi Pencatatan Keuangan
 
-ArthaLedger adalah sebuah aplikasi web pencatatan keuangan berbasis Chart of Account (COA). Aplikasi ini dirancang untuk mencatat transaksi keuangan secara akurat dengan mengelompokkan setiap transaksi ke dalam kategori Income atau Expense, lalu menghasilkan laporan Profit/Loss (Laba Rugi) bulanan secara instan.
+Sebuah aplikasi web pencatatan keuangan berbasis Chart of Account (COA). Aplikasi ini dirancang untuk mencatat transaksi keuangan secara akurat dengan mengelompokkan setiap transaksi ke dalam kategori Income atau Expense, lalu menghasilkan laporan Profit/Loss (Laba Rugi) bulanan secara instan.
 
 Sistem ini sangat cocok digunakan untuk admin atau pencatat keuangan yang membutuhkan pencatatan debit/kredit harian dengan dukungan multi-currency (konversi mata uang asing otomatis) dan antarmuka yang modern.
 
