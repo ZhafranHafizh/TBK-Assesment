@@ -142,7 +142,7 @@ const submit = () => {
                                                     Edit</Link>
                                                 <span v-else
                                                     class="inline-flex items-center rounded bg-[#161b22] px-2.5 py-1.5 text-xs font-medium text-[#8b949e] border border-[#30363d] cursor-not-allowed"
-                                                    title="Terkunci (Lebih dari 24 jam)">🔒</span>
+                                                    title="Terkunci (Lebih dari 24 jam)">Edit</span>
                                                 <button @click="confirmDeletion(category.id)"
                                                     class="inline-flex items-center rounded bg-[#21262d] px-2.5 py-1.5 text-xs font-medium text-[#f85149] border border-[#30363d] hover:bg-[#f85149] hover:text-white transition-colors">Hapus</button>
                                             </div>

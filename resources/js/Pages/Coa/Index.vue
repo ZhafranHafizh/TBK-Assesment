@@ -141,7 +141,7 @@ const submit = () => {
                                                     Edit</Link>
                                                 <span v-else
                                                     class="inline-flex items-center rounded bg-[#161b22] px-2.5 py-1.5 text-xs font-medium text-[#8b949e] border border-[#30363d] cursor-not-allowed"
-                                                    title="Terkunci (Lebih dari 24 jam)">🔒</span>
+                                                    title="Terkunci (Lebih dari 24 jam)">Edit</span>
                                                 <button @click="confirmDeletion(coa.id)"
                                                     class="inline-flex items-center rounded bg-[#21262d] px-2.5 py-1.5 text-xs font-medium text-[#f85149] border border-[#30363d] hover:bg-[#f85149] hover:text-white transition-colors">Hapus</button>
                                             </div>
@@ -159,7 +159,8 @@ const submit = () => {
                     </div>
 
                     <!-- Create Form Sidebar -->
-                    <div v-show="showCreateForm" class="lg:w-1/3 w-full transition-all duration-300 ease-in-out sticky top-6 self-start">
+                    <div v-show="showCreateForm"
+                        class="lg:w-1/3 w-full transition-all duration-300 ease-in-out sticky top-6 self-start">
                         <div class="rounded-md border border-[#30363d] bg-[#161b22] p-5 shadow-sm">
                             <h3 class="text-lg font-medium text-[#e6edf3] mb-4 border-b border-[#30363d] pb-2">Tambah
                                 COA Baru
@@ -171,7 +172,7 @@ const submit = () => {
                                         class="mt-1 block w-full rounded-md border-[#30363d] bg-[#0d1117] text-[#e6edf3] shadow-sm focus:border-[#58a6ff] focus:ring-[#58a6ff] sm:text-sm font-mono"
                                         required autofocus placeholder="Contoh: 101, 401" />
                                     <p v-if="form.errors.code" class="mt-1 text-xs text-[#ff7b72]">{{ form.errors.code
-                                        }}</p>
+                                    }}</p>
                                 </div>
 
                                 <div>
@@ -180,7 +181,7 @@ const submit = () => {
                                         class="mt-1 block w-full rounded-md border-[#30363d] bg-[#0d1117] text-[#e6edf3] shadow-sm focus:border-[#58a6ff] focus:ring-[#58a6ff] sm:text-sm"
                                         required placeholder="Contoh: Gaji" />
                                     <p v-if="form.errors.name" class="mt-1 text-xs text-[#ff7b72]">{{ form.errors.name
-                                        }}</p>
+                                    }}</p>
                                 </div>
 
                                 <div>

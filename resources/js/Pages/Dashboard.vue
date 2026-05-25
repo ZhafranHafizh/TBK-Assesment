@@ -56,6 +56,11 @@ const props = defineProps<{
 
 const sankeyPeriod = ref(props.sankeyData.period);
 const activeTab = ref('trend');
+const openFaq = ref<number | null>(null);
+
+const toggleFaq = (index: number) => {
+    openFaq.value = openFaq.value === index ? null : index;
+};
 
 watch(sankeyPeriod, (newPeriod) => {
     router.get(route('dashboard'), { sankey_period: newPeriod }, {
@@ -338,7 +343,7 @@ const sankeyOption = computed(() => {
                                                 :class="tx.coa?.coa_category?.type === 'income' ? 'text-[#3fb950]' : 'text-[#ff7b72]'">
                                                 {{ tx.coa?.coa_category?.type === 'income' ? '+' : '-' }}
                                                 {{ formatRupiah(tx.coa?.coa_category?.type === 'income' ? tx.credit :
-                                                tx.debit) }}
+                                                    tx.debit) }}
                                             </span>
                                         </div>
                                         <div class="flex items-center justify-between text-xs text-[#8b949e]">
@@ -355,6 +360,148 @@ const sankeyOption = computed(() => {
                         </div>
                     </div>
 
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 pb-12">
+            <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-6 shadow-sm">
+                <h2 class="text-xl font-semibold text-[#e6edf3] mb-6 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#58a6ff]" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Frequently Asked Questions (FAQ)
+                </h2>
+                <div class="flex flex-col gap-4">
+                    <!-- FAQ 1 -->
+                    <div
+                        class="group bg-[#0d1117] border border-[#30363d] rounded-lg hover:border-[#58a6ff] transition-colors overflow-hidden">
+                        <button @click="toggleFaq(1)"
+                            class="w-full text-left font-medium text-[#e6edf3] p-5 cursor-pointer flex justify-between items-center group-hover:text-[#58a6ff] transition-colors focus:outline-none">
+                            1. Bagaimana alur penggunaan?
+                            <span class="transition-transform duration-300" :class="{ '-rotate-180': openFaq === 1 }">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </span>
+                        </button>
+                        <div class="grid transition-all duration-300 ease-in-out"
+                            :class="openFaq === 1 ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'">
+                            <div class="overflow-hidden">
+                                <div class="px-5 pb-5 pt-0">
+                                    <p
+                                        class="text-sm text-[#8b949e] leading-relaxed border-t border-[#30363d] pt-4 mt-1">
+                                        Sistem ini berbasis Chart of Account (COA). Alur utamanya adalah: Anda membuat
+                                        <strong>Kategori COA</strong> (Income/Expense) &rarr; Membuat <strong>Akun
+                                            COA</strong>
+                                        &rarr; Mencatat <strong>Transaksi</strong>. Laporan Laba/Rugi (Profit/Loss) akan
+                                        otomatis digenerate.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 2 -->
+                    <div
+                        class="group bg-[#0d1117] border border-[#30363d] rounded-lg hover:border-[#58a6ff] transition-colors overflow-hidden">
+                        <button @click="toggleFaq(2)"
+                            class="w-full text-left font-medium text-[#e6edf3] p-5 cursor-pointer flex justify-between items-center group-hover:text-[#58a6ff] transition-colors focus:outline-none">
+                            2. Apakah integritas data terjaga?
+                            <span class="transition-transform duration-300" :class="{ '-rotate-180': openFaq === 2 }">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </span>
+                        </button>
+                        <div class="grid transition-all duration-300 ease-in-out"
+                            :class="openFaq === 2 ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'">
+                            <div class="overflow-hidden">
+                                <div class="px-5 pb-5 pt-0">
+                                    <p
+                                        class="text-sm text-[#8b949e] leading-relaxed border-t border-[#30363d] pt-4 mt-1">
+                                        Sangat terjaga. Kami menerapkan <em>auto-routing</em> Debit/Credit, nilai tukar
+                                        mata
+                                        uang yang dikunci otomatis dari API, validasi server yang ketat, serta
+                                        penguncian data
+                                        (Lock Period) setelah 24 jam untuk mencegah manipulasi.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 3 -->
+                    <div
+                        class="group bg-[#0d1117] border border-[#30363d] rounded-lg hover:border-[#58a6ff] transition-colors overflow-hidden">
+                        <button @click="toggleFaq(3)"
+                            class="w-full text-left font-medium text-[#e6edf3] p-5 cursor-pointer flex justify-between items-center group-hover:text-[#58a6ff] transition-colors focus:outline-none">
+                            3. Apa yang terjadi jika saya menghapus transaksi?
+                            <span class="transition-transform duration-300" :class="{ '-rotate-180': openFaq === 3 }">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </span>
+                        </button>
+                        <div class="grid transition-all duration-300 ease-in-out"
+                            :class="openFaq === 3 ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'">
+                            <div class="overflow-hidden">
+                                <div class="px-5 pb-5 pt-0">
+                                    <p
+                                        class="text-sm text-[#8b949e] leading-relaxed border-t border-[#30363d] pt-4 mt-1">
+                                        Data tidak akan benar-benar terhapus secara fisik dari database (<em>hard
+                                            delete</em>).
+                                        Sistem menggunakan mekanisme <em>soft-delete</em> yang menyembunyikan data
+                                        tersebut demi
+                                        mempertahankan <strong>jejak audit</strong> (audit trail).
+                                        Laporan transaksi tersebut juga akan langsung otomatis tergenerate sebagai
+                                        sebuah report
+                                        dalam bentuk PDF di halaman <strong>Arsip</strong>.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 4 -->
+                    <div
+                        class="group bg-[#0d1117] border border-[#30363d] rounded-lg hover:border-[#58a6ff] transition-colors overflow-hidden">
+                        <button @click="toggleFaq(4)"
+                            class="w-full text-left font-medium text-[#e6edf3] p-5 cursor-pointer flex justify-between items-center group-hover:text-[#58a6ff] transition-colors focus:outline-none">
+                            4. Kenapa tidak bisa edit Kategori/COAs?
+                            <span class="transition-transform duration-300" :class="{ '-rotate-180': openFaq === 4 }">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </span>
+                        </button>
+                        <div class="grid transition-all duration-300 ease-in-out"
+                            :class="openFaq === 4 ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'">
+                            <div class="overflow-hidden">
+                                <div class="px-5 pb-5 pt-0">
+                                    <p
+                                        class="text-sm text-[#8b949e] leading-relaxed border-t border-[#30363d] pt-4 mt-1">
+                                        Jika usia pembuatan data Master (Kategori atau COA) sudah melewati 24 jam,
+                                        sistem akan
+                                        menguncinya (<em>lock</em>) secara otomatis. Hal ini untuk mematuhi kaidah
+                                        pembukuan
+                                        yang sah dan mencegah terjadinya perubahan paksa pada histori data.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

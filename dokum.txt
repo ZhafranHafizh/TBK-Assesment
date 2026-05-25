@@ -1,0 +1,112 @@
+================================================================================
+DOKUMENTASI FOLDER DAN FILE PROJECT: WEB APP PENCATATAN KEUANGAN
+================================================================================
+
+Dokumen ini menjelaskan fungsi dari folder-folder penting dalam project serta
+penjelasan singkat mengenai file-file di dalamnya yang menangani berbagai fitur
+seperti Pencatatan Keuangan, Chart of Account (COA), Laporan Profit/Loss, dan
+Multi-currency.
+
+--------------------------------------------------------------------------------
+1. FOLDER: app/Http/Controllers/
+--------------------------------------------------------------------------------
+Fungsi: Berisi class Controller backend (Laravel) yang menerima request dari
+pengguna, memproses data dengan bantuan model/service, dan mengembalikan respon
+ke tampilan (frontend/Inertia).
+
+File Utama:
+- ArchiveController.php             : Menangani fitur arsip atau pengelolaan data lama.
+- CoaCategoryController.php         : Menangani CRUD (Create, Read, Update, Delete) untuk master Kategori Chart of Account (Income/Expense).
+- CoaController.php                 : Menangani CRUD untuk master Chart of Account (COA).
+- DashboardController.php           : Menyiapkan data ringkasan analitik untuk halaman dashboard (Income, Expense, Net Income).
+- FinancialTransactionController.php: Menangani CRUD transaksi keuangan debit dan kredit harian.
+- ProfileController.php             : Menangani proses update data profil pengguna.
+- ReportController.php              : Menangani pembuatan data laporan bulanan Profit/Loss dan ekspor laporannya.
+- SettingController.php             : Menangani pengaturan umum aplikasi (seperti setting nama aplikasi dan pengaturan currency/mata uang).
+
+
+--------------------------------------------------------------------------------
+2. FOLDER: app/Models/
+--------------------------------------------------------------------------------
+Fungsi: Berisi class Model Eloquent ORM yang merepresentasikan dan memanipulasi
+tabel-tabel di dalam database MySQL.
+
+File Utama:
+- AllowedCurrency.php     : Representasi tabel daftar mata uang yang diperbolehkan di aplikasi.
+- AppSetting.php          : Representasi tabel pengaturan konfigurasi aplikasi.
+- Coa.php                 : Representasi tabel master Chart of Account.
+- CoaCategory.php         : Representasi tabel master Kategori COA.
+- ExchangeRate.php        : Representasi tabel nilai tukar kurs mata uang.
+- FinancialTransaction.php: Representasi tabel data utama transaksi keuangan.
+- User.php                : Representasi tabel admin/pengguna aplikasi.
+
+
+--------------------------------------------------------------------------------
+3. FOLDER: app/Services/
+--------------------------------------------------------------------------------
+Fungsi: Tempat memisahkan logic bisnis yang kompleks agar tidak menumpuk di Controller.
+
+File Utama:
+- ExchangeRateService.php : Logic otomatisasi untuk menghitung atau sinkronisasi nilai tukar kurs antar mata uang.
+- ReportService.php       : Logic kompleks untuk menghitung pivot/cross-tab rekap data laporan Profit/Loss bulanan berdasarkan kategori COA.
+
+
+--------------------------------------------------------------------------------
+4. FOLDER: app/Exports/
+--------------------------------------------------------------------------------
+Fungsi: Menangani format dan aturan saat data sistem ingin di-export ke format
+Excel (menggunakan library maatwebsite/excel).
+
+File Utama:
+- FinancialReportExport.php : Struktur ekspor Excel untuk rincian laporan keuangan.
+- ProfitLossExport.php      : Struktur ekspor Excel spesifik untuk laporan Profit/Loss dengan format yang rapi.
+
+
+--------------------------------------------------------------------------------
+5. FOLDER: resources/js/Pages/
+--------------------------------------------------------------------------------
+Fungsi: Berisi file-file Vue.js yang berfungsi sebagai "Halaman Utama" aplikasi,
+dirender menggunakan Inertia.js.
+
+File Utama:
+- Dashboard.vue           : Antarmuka dashboard (menampilkan grafik analitik dan summary keuangan).
+- Transaction/Index.vue   : Halaman daftar transaksi beserta form modal/dialog untuk tambah data transaksi.
+- Transaction/Edit.vue    : Halaman form untuk mengubah (edit) data transaksi yang sudah ada.
+- Coa/Index.vue           : Halaman daftar master COA dan antarmuka untuk menambah COA baru.
+- CoaCategory/Index.vue   : Halaman daftar Kategori COA dan antarmuka untuk menambah Kategori baru.
+- Report/Index.vue        : Halaman antarmuka laporan Profit/Loss lengkap dengan filter periode.
+- Settings/Index.vue      : Halaman form untuk mengubah konfigurasi aplikasi.
+- Archive/Index.vue       : Halaman antarmuka untuk melihat daftar data yang diarsipkan.
+
+
+--------------------------------------------------------------------------------
+6. FOLDER: resources/js/Components/
+--------------------------------------------------------------------------------
+Fungsi: Berisi potongan komponen antarmuka Vue.js yang dapat digunakan berulang-
+ulang (reusable) di berbagai halaman.
+
+File Utama:
+- CurrencyInput.vue : Komponen text input khusus yang memformat angka menjadi format uang (ribuan) secara realtime.
+- CustomSelect.vue  : Komponen dropdown pilihan khusus untuk form (bisa digunakan untuk select COA atau Currency).
+- Modal.vue         : Komponen dasar untuk memunculkan popup dialog.
+- Dan berbagai komponen UI standar (PrimaryButton, TextInput, InputError, dsb).
+
+
+--------------------------------------------------------------------------------
+7. FOLDER: routes/
+--------------------------------------------------------------------------------
+Fungsi: Menentukan alamat URL dari web dan mengarahkannya ke Controller mana.
+
+File Utama:
+- web.php  : Berisi rute URL utama aplikasi (Dashboard, CRUD COA, Transaksi, Laporan).
+- auth.php : Berisi rute URL terkait autentikasi (Login, Register, Logout, Reset Password).
+
+
+--------------------------------------------------------------------------------
+8. FOLDER: database/
+--------------------------------------------------------------------------------
+Fungsi: Pengelolaan struktur dan data awal database.
+
+Sub-folder Utama:
+- migrations/ : Kumpulan file skema database. Setiap file berisi instruksi pembuatan tabel dan kolom (contoh: pembuatan tabel transactions, coas, app_settings).
+- seeders/    : Kumpulan skrip untuk mengisi database dengan data awal (contoh: akun admin default, mata uang default).
